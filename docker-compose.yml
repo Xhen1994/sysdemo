@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # PostgreSQL数据库
+  db:
+    image: postgres:15
+    container_name: sysdemo_db
+    environment:
+      POSTGRES_USER: sysdemo
+      POSTGRES_PASSWORD: sysdemo123
+      POSTGRES_DB: sysdemo
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - sysdemo_network
+
+  # Redis缓存
+  redis:
+    image: redis:7-alpine
+    container_name: sysdemo_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - sysdemo_network
+
+  # 后端API服务
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sysdemo_backend
+    environment:
+      DATABASE_URL: postgresql://sysdemo:sysdemo123@db:5432/sysdemo
+      REDIS_URL: redis://redis:6379/0
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    networks:
+      - sysdemo_network
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # 前端服务
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sysdemo_frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - sysdemo_network
+    command: npm start
+
+volumes:
+  postgres_data:
+
+networks:
+  sysdemo_network:
+    driver: bridge
+
+
+
