@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}创建任务 - 协同数字化平台{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2><i class="bi bi-plus-circle"></i> 创建任务</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label for="title" class="form-label">任务标题 <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="description" class="form-label">任务描述</label>
+                <textarea class="form-control" id="description" name="description" rows="5"></textarea>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="task_type" class="form-label">任务类型 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="task_type" name="task_type" required>
+                        <option value="support">技术支撑</option>
+                        <option value="maintenance">系统维护</option>
+                        <option value="deployment">部署</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="priority" class="form-label">优先级 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="priority" name="priority" required>
+                        <option value="low">低</option>
+                        <option value="medium" selected>中</option>
+                        <option value="high">高</option>
+                        <option value="urgent">紧急</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="province" class="form-label">目标省份</label>
+                    <select class="form-select" id="province" name="province">
+                        <option value="">-选择省份-</option>
+                        {% for province in provinces %}
+                        <option value="{{ province }}">{{ province }}</option>
+                        {% endfor %}
+                    </select>
+                    <small class="form-text text-muted">留空则自动派单</small>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="assigned_to" class="form-label">指派给</label>
+                    <select class="form-select" id="assigned_to" name="assigned_to">
+                        <option value="">-自动分配-</option>
+                        {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.username }} ({{ user.province or '总部' }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> 创建任务
+                </button>
+                <a href="{{ url_for('tasks.index') }}" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> 取消
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

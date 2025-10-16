@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}系统设置 - 协同数字化平台{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2><i class="bi bi-sliders"></i> 系统设置</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <h5 class="mb-3">DeepSeek AI配置</h5>
+            <div class="mb-3">
+                <label class="form-label">API密钥</label>
+                <input type="text" class="form-control" name="deepseek_api_key" 
+                       placeholder="请输入DeepSeek API密钥">
+                <small class="form-text text-muted">
+                    设置后可使用AI功能。请在环境变量DEEPSEEK_API_KEY中配置。
+                </small>
+            </div>
+            
+            <hr class="my-4">
+            
+            <h5 class="mb-3">系统参数</h5>
+            <div class="mb-3">
+                <label class="form-label">每页显示条数</label>
+                <input type="number" class="form-control" name="items_per_page" value="20">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">会话超时时间（分钟）</label>
+                <input type="number" class="form-control" name="session_timeout" value="60">
+            </div>
+            
+            <hr class="my-4">
+            
+            <h5 class="mb-3">通知设置</h5>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="email_notifications" checked>
+                    <label class="form-check-label" for="email_notifications">
+                        启用邮件通知
+                    </label>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> 保存设置
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

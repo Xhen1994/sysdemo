@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}系统管理 - 协同数字化平台{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-gear"></i> 系统管理</h2>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="bi bi-people" style="font-size: 3rem; color: #667eea;"></i>
+                <h4 class="mt-3">用户管理</h4>
+                <p class="text-muted">管理系统用户和角色</p>
+                <a href="{{ url_for('admin.users') }}" class="btn btn-primary">
+                    进入管理
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="bi bi-journal-text" style="font-size: 3rem; color: #f093fb;"></i>
+                <h4 class="mt-3">系统日志</h4>
+                <p class="text-muted">查看系统操作日志</p>
+                <a href="{{ url_for('admin.logs') }}" class="btn btn-primary">
+                    查看日志
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="bi bi-sliders" style="font-size: 3rem; color: #4facfe;"></i>
+                <h4 class="mt-3">系统设置</h4>
+                <p class="text-muted">配置系统参数</p>
+                <a href="{{ url_for('admin.settings') }}" class="btn btn-primary">
+                    进入设置
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="bi bi-info-circle" style="font-size: 3rem; color: #43e97b;"></i>
+                <h4 class="mt-3">系统信息</h4>
+                <p class="text-muted">查看系统状态信息</p>
+                <button class="btn btn-primary" disabled>
+                    即将推出
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

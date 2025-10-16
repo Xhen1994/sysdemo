@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}创建目标 - 协同数字化平台{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2><i class="bi bi-plus-circle"></i> 创建目标</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label for="title" class="form-label">目标标题 <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="description" class="form-label">目标描述</label>
+                <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="target_province" class="form-label">目标省份</label>
+                    <select class="form-select" id="target_province" name="target_province">
+                        <option value="">-选择省份-</option>
+                        {% for province in provinces %}
+                        <option value="{{ province }}">{{ province }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="target_user" class="form-label">负责人</label>
+                    <select class="form-select" id="target_user" name="target_user">
+                        <option value="">-选择负责人-</option>
+                        {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.username }} ({{ user.province or '总部' }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="deadline" class="form-label">截止日期 <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" id="deadline" name="deadline" required>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="parent_id" class="form-label">父目标（可选）</label>
+                    <select class="form-select" id="parent_id" name="parent_id">
+                        <option value="">-无父目标-</option>
+                        {% for parent in parent_objectives %}
+                        <option value="{{ parent.id }}">{{ parent.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> 创建目标
+                </button>
+                <a href="{{ url_for('objectives.index') }}" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> 取消
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}工作台 - 协同数字化平台{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>工作台</h2>
+    <div class="text-muted">欢迎回来，{{ current_user.username }}！</div>
+</div>
+
+<!-- 统计卡片 -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <h3>{{ stats.total_objectives }}</h3>
+            <p>总目标数</p>
+            <small>完成率: {{ stats.objective_completion_rate }}%</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <h3>{{ stats.total_issues }}</h3>
+            <p>问题反馈</p>
+            <small>解决率: {{ stats.issue_resolution_rate }}%</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <h3>{{ stats.total_tasks }}</h3>
+            <p>工作任务</p>
+            <small>完成率: {{ stats.task_completion_rate }}%</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+            <h3>{{ stats.in_progress_objectives }}</h3>
+            <p>进行中目标</p>
+            <small>需要关注</small>
+        </div>
+    </div>
+</div>
+
+<!-- 图表 -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-bar-chart-fill"></i> 目标状态分布
+            </div>
+            <div class="card-body">
+                <canvas id="objectiveChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-pie-chart-fill"></i> 问题类别分布
+            </div>
+            <div class="card-body">
+                <canvas id="issueChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-graph-up"></i> 任务分布
+            </div>
+            <div class="card-body">
+                <canvas id="taskChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// 目标状态图表
+fetch('/dashboard/api/objective-chart')
+    .then(response => response.json())
+    .then(data => {
+        const ctx = document.getElementById('objectiveChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: '目标数量',
+                    data: data.data,
+                    backgroundColor: [
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(118, 75, 162, 0.8)',
+                        'rgba(67, 233, 123, 0.8)',
+                        'rgba(252, 92, 125, 0.8)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    });
+
+// 问题类别图表
+fetch('/dashboard/api/issue-chart')
+    .then(response => response.json())
+    .then(data => {
+        const ctx = document.getElementById('issueChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    data: data.data,
+                    backgroundColor: [
+                        'rgba(240, 147, 251, 0.8)',
+                        'rgba(245, 87, 108, 0.8)',
+                        'rgba(79, 172, 254, 0.8)',
+                        'rgba(0, 242, 254, 0.8)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true
+            }
+        });
+    });
+
+// 任务分布图表
+fetch('/dashboard/api/task-distribution')
+    .then(response => response.json())
+    .then(data => {
+        const ctx = document.getElementById('taskChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: '任务数量',
+                    data: data.data,
+                    borderColor: 'rgba(102, 126, 234, 1)',
+                    backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true
+            }
+        });
+    });
+</script>
+{% endblock %}
+

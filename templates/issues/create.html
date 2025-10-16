@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}提交问题 - 协同数字化平台{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2><i class="bi bi-plus-circle"></i> 提交问题</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label for="title" class="form-label">问题标题 <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="description" class="form-label">问题描述 <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="description" name="description" rows="6" required></textarea>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="category" class="form-label">问题类别 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="category" name="category" required>
+                        <option value="bug">缺陷</option>
+                        <option value="feature">新功能需求</option>
+                        <option value="improvement">改进建议</option>
+                        <option value="question">使用问题</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="priority" class="form-label">优先级 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="priority" name="priority" required>
+                        <option value="low">低</option>
+                        <option value="medium" selected>中</option>
+                        <option value="high">高</option>
+                        <option value="urgent">紧急</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> 提交
+                </button>
+                <a href="{{ url_for('issues.index') }}" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> 取消
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

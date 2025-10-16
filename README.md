@@ -1,291 +1,241 @@
-# 省专协同数字化平台
+# 协同数字化平台
 
-一个集成AI智能分析的协同数字化管理平台，支持问题管理、智能总结和反馈追踪。
+## 项目简介
 
-## 功能特性
+这是一个面向省级单位的协同数字化平台，提供目标管理、问题反馈、工作流管理、知识库和数据看板等功能。
 
-### 核心功能
-- 📊 **协同工作管理** - 多部门、多项目协同工作管理
-- 📝 **问题管理系统** - 问题提交、追踪、分配和解决
-- 🤖 **AI智能总结** - 自动总结问题、生成分析报告
-- 💬 **反馈系统** - 问题反馈、评价和改进建议
-- 👥 **用户管理** - 用户认证、权限管理
-- 📈 **数据统计** - 可视化数据分析和报表
+## 主要功能
 
-### AI功能
-- 问题智能分类和标签生成
-- 自动生成问题摘要
-- 问题趋势分析
-- 智能推荐解决方案
+### 1. 目标管理
+- 目标下发与分解
+- 进度上报与跟踪
+- 目标审核与统计分析
+- 支持父子目标关系
+
+### 2. 需求与问题反馈
+- 问题分类管理
+- 优先级设置
+- 流转与闭环管理
+- AI智能总结（基于DeepSeek）
+
+### 3. 工作流管理
+- 支撑任务创建与派单
+- 自动派单与人工调整
+- 工作日志记录
+- 任务验收流程
+
+### 4. 知识库
+- 支持Markdown格式
+- 分类与标签管理
+- 搜索功能
+- 浏览统计
+
+### 5. 数据看板
+- 可视化图表展示
+- 目标完成率统计
+- 问题处理效率分析
+- 任务分布概览
+
+### 6. 系统管理
+- 用户与角色管理
+- 权限配置
+- 系统日志查看
+- 参数设置
 
 ## 技术栈
 
-### 后端
-- Python 3.9+
-- FastAPI - 高性能Web框架
-- SQLAlchemy - ORM
-- PostgreSQL/SQLite - 数据库
-- Redis - 缓存
-- OpenAI API / 其他AI API - AI功能集成
+- **后端框架**: Flask 3.0
+- **前端**: Bootstrap 5, Chart.js
+- **数据存储**: JSON/JSONL文件
+- **AI集成**: DeepSeek API
+- **Python版本**: 3.11
 
-### 前端
-- React 18
-- TypeScript
-- Ant Design - UI组件库
-- Axios - HTTP客户端
-- React Router - 路由管理
-- Recharts - 数据可视化
+## 部署说明
 
-## 项目结构
-
-```
-sysdemo/
-├── backend/                 # 后端服务
-│   ├── app/
-│   │   ├── api/            # API路由
-│   │   ├── models/         # 数据模型
-│   │   ├── services/       # 业务逻辑
-│   │   ├── schemas/        # Pydantic模型
-│   │   └── core/           # 核心配置
-│   ├── tests/              # 测试文件
-│   └── requirements.txt    # Python依赖
-├── frontend/               # 前端应用
-│   ├── src/
-│   │   ├── components/     # React组件
-│   │   ├── pages/          # 页面
-│   │   ├── services/       # API服务
-│   │   ├── utils/          # 工具函数
-│   │   └── App.tsx         # 主应用
-│   └── package.json        # Node依赖
-└── docs/                   # 文档
-```
-
-## 快速开始
-
-### 🚀 一键启动（Docker）
-
-**Windows用户**：
-```bash
-# 双击运行 start.bat 或在命令行执行：
-start.bat
-```
-
-**Linux/Mac用户**：
-```bash
-# 赋予执行权限
-chmod +x start.sh
-# 运行启动脚本
-./start.sh
-```
-
-**首次启动需要初始化数据库**：
-```bash
-docker-compose exec backend python init_db.py
-```
-
-### 📝 手动启动
-
-#### 后端启动
+### 1. 环境准备
 
 ```bash
-# 进入后端目录
-cd backend
-
-# 创建虚拟环境
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+# 创建conda环境
+conda create -n sysdemo python=3.11
+conda activate sysdemo
 
 # 安装依赖
 pip install -r requirements.txt
+```
 
-# 配置环境变量
+### 2. 配置环境变量
+
+```bash
+# 复制环境变量示例文件
 cp .env.example .env
-# 编辑.env文件，填入你的AI API密钥
 
-# 初始化数据库
-python init_db.py
-
-# 启动服务
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+# 编辑.env文件，设置必要的配置
+nano .env
 ```
 
-#### 前端启动
+重要配置项：
+- `SECRET_KEY`: 应用密钥，生产环境必须修改
+- `DEEPSEEK_API_KEY`: DeepSeek API密钥（可选，用于AI功能）
+
+### 3. 启动应用
+
+#### Linux服务器部署
 
 ```bash
-# 进入前端目录
-cd frontend
+# 赋予执行权限
+chmod +x start.sh stop.sh restart.sh
 
-# 安装依赖
-npm install
+# 启动应用
+./start.sh
 
-# 启动开发服务器
-npm start
+# 停止应用
+./stop.sh
+
+# 重启应用
+./restart.sh
 ```
 
-### 🌐 访问系统
-
-- **前端界面**：http://localhost:3000
-- **后端API**：http://localhost:8000
-- **API文档**：http://localhost:8000/docs
-
-**默认登录账号**：
-- 用户名：`admin`
-- 密码：`admin123`
-
-> 💡 **提示**：首次使用前请配置 `backend/.env` 文件中的 `OPENAI_API_KEY`
-
-## API文档
-
-启动后端服务后，访问：
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
-
-## 环境变量配置
-
-首次运行会自动创建 `backend/.env` 文件，请编辑填入配置：
-
-```env
-# 数据库配置
-DATABASE_URL=sqlite:///./sql_app.db
-# 或使用PostgreSQL: postgresql://user:password@localhost/dbname
-
-# AI API配置（必须配置）
-OPENAI_API_KEY=sk-your-actual-api-key-here  # 👈 在这里填入你的API密钥
-OPENAI_API_BASE=https://api.openai.com/v1
-AI_MODEL=gpt-3.5-turbo
-AI_MAX_TOKENS=2000
-
-# JWT密钥（生产环境请修改）
-SECRET_KEY=your-secret-key-change-this-in-production
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-
-# Redis配置（可选）
-REDIS_URL=redis://localhost:6379/0
-
-# CORS配置
-ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
-```
-
-### 如何获取OpenAI API密钥？
-
-1. 访问 https://platform.openai.com
-2. 注册/登录账号
-3. 进入API密钥管理页面
-4. 创建新的API密钥
-5. 复制密钥到 `.env` 文件
-
-> 💡 也支持使用兼容OpenAI API的其他服务（如Azure OpenAI、国内API等）
-
-## 主要功能说明
-
-### 1. 问题管理
-- 创建问题：提交问题描述、优先级、负责人
-- 问题追踪：查看问题状态、历史记录
-- 问题分配：分配给相关部门或人员
-- 问题解决：更新进度、关闭问题
-
-### 2. AI智能总结
-- **自动摘要**：AI自动生成问题摘要
-- **分类标签**：智能分类和打标签
-- **趋势分析**：分析问题趋势和模式
-- **解决方案推荐**：基于历史数据推荐解决方案
-
-### 3. 反馈系统
-- 提交反馈：对问题处理进行评价
-- 追踪反馈：查看反馈处理状态
-- 改进建议：收集和管理改进建议
-
-## 部署
-
-### Docker一键部署（推荐）
+#### 本地开发模式
 
 ```bash
-# 1. 配置环境变量
-cp backend/.env.example backend/.env
-# 编辑 backend/.env，填入 OPENAI_API_KEY
-
-# 2. 启动所有服务
-docker-compose up -d
-
-# 3. 初始化数据库
-docker-compose exec backend python init_db.py
-
-# 4. 访问系统
-# 前端: http://localhost:3000
-# 后端: http://localhost:8000
+# 直接运行
+python app.py
 ```
 
-### 生产环境部署
+### 4. 访问应用
 
-详细的生产环境部署指南请查看：
-- 📖 [完整部署指南](docs/DEPLOYMENT.md)
-- 🔧 包含Nginx配置、HTTPS、系统服务等
+- 服务器地址: http://14.103.165.46:4000
+- 默认管理员账号: `admin`
+- 默认密码: `admin123`
 
-## 测试
+**⚠️ 重要提示**: 首次登录后请立即修改默认密码！
+
+## 目录结构
+
+```
+sysdemo/
+├── app.py              # 应用入口
+├── config.py           # 配置文件
+├── requirements.txt    # Python依赖
+├── models/             # 数据模型
+│   ├── user.py
+│   └── data_manager.py
+├── routes/             # 路由模块
+│   ├── auth.py        # 认证
+│   ├── objectives.py  # 目标管理
+│   ├── issues.py      # 问题反馈
+│   ├── tasks.py       # 工作流
+│   ├── knowledge.py   # 知识库
+│   ├── dashboard.py   # 数据看板
+│   └── admin.py       # 系统管理
+├── services/           # 服务层
+│   └── ai_service.py  # AI服务
+├── templates/          # HTML模板
+│   ├── base.html
+│   ├── auth/
+│   ├── objectives/
+│   ├── issues/
+│   ├── tasks/
+│   ├── knowledge/
+│   ├── dashboard/
+│   └── admin/
+├── data/               # 数据存储目录
+│   ├── users.json
+│   ├── objectives.json
+│   ├── issues.jsonl
+│   ├── tasks.jsonl
+│   ├── knowledge.json
+│   └── system_logs.jsonl
+├── logs/               # 日志目录
+├── start.sh            # 启动脚本
+├── stop.sh             # 停止脚本
+└── restart.sh          # 重启脚本
+```
+
+## 用户角色
+
+### 系统管理员 (admin)
+- 拥有所有权限
+- 管理用户和角色
+- 查看系统日志
+- 配置系统参数
+
+### 省级管理员 (province_manager)
+- 管理本省目标和任务
+- 审核本省目标进度
+- 分配问题和任务
+- 使用AI功能
+
+### 普通员工 (staff)
+- 查看和更新自己的目标
+- 提交问题反馈
+- 执行分配的任务
+- 访问知识库
+
+## 数据备份
+
+数据存储在 `data/` 目录下，建议定期备份：
 
 ```bash
-# 后端测试
-cd backend
-pytest
+# 备份数据
+tar -czf backup-$(date +%Y%m%d).tar.gz data/
 
-# 前端测试
-cd frontend
-npm test
+# 恢复数据
+tar -xzf backup-YYYYMMDD.tar.gz
 ```
 
-## 贡献指南
+## 故障排查
 
-欢迎提交Issue和Pull Request！
+### 应用无法启动
+
+1. 检查端口4000是否被占用：
+```bash
+netstat -tuln | grep 4000
+```
+
+2. 检查日志文件：
+```bash
+tail -f logs/app.log
+```
+
+3. 确认conda环境已激活：
+```bash
+conda env list
+```
+
+### AI功能无法使用
+
+1. 确认已设置DeepSeek API密钥
+2. 检查网络连接
+3. 查看系统日志获取详细错误信息
+
+## 安全建议
+
+1. **修改默认密码**: 首次登录后立即修改admin账号密码
+2. **设置SECRET_KEY**: 生产环境使用随机生成的密钥
+3. **配置防火墙**: 限制4000端口的访问来源
+4. **定期备份**: 定期备份data目录
+5. **更新依赖**: 定期更新Python依赖包
+
+## 开发说明
+
+### 添加新功能
+
+1. 在 `routes/` 目录创建新的路由文件
+2. 在 `templates/` 目录创建对应的HTML模板
+3. 在 `routes/__init__.py` 中注册新的蓝图
+
+### 数据模型
+
+数据使用JSON/JSONL格式存储：
+- JSON: 用于存储列表数据（如用户、角色、目标、知识库）
+- JSONL: 用于存储日志型数据（如问题反馈、任务、系统日志）
+
+## 联系支持
+
+如有问题或建议，请联系系统管理员。
 
 ## 许可证
 
-MIT License
-
-## 📚 相关文档
-
-- 📖 [快速开始指南](QUICKSTART.md) - 5分钟上手
-- 🚀 [部署指南](docs/DEPLOYMENT.md) - 生产环境部署
-- 🔌 [API文档](docs/API.md) - 完整API说明
-- 📱 [用户手册](docs/USER_GUIDE.md) - 功能使用说明
-- 📋 [项目总结](PROJECT_SUMMARY.md) - 技术架构和实现
-
-## 🎯 快速导航
-
-**新手用户**：
-1. 阅读 [快速开始指南](QUICKSTART.md)
-2. 运行启动脚本 `start.bat` 或 `start.sh`
-3. 查看 [用户手册](docs/USER_GUIDE.md) 了解功能
-
-**开发者**：
-1. 查看 [项目总结](PROJECT_SUMMARY.md) 了解架构
-2. 阅读 [API文档](docs/API.md) 了解接口
-3. 参考代码注释进行二次开发
-
-**运维人员**：
-1. 阅读 [部署指南](docs/DEPLOYMENT.md)
-2. 配置生产环境
-3. 设置监控和备份
-
-## 🐛 故障排查
-
-遇到问题？请查看：
-1. [快速开始指南](QUICKSTART.md) 的故障排查章节
-2. [部署指南](docs/DEPLOYMENT.md) 的故障排查章节
-3. GitHub Issues
-
-## 🤝 贡献
-
-欢迎提交 Pull Request 或 Issue！
-
-## 📞 联系方式
-
-如有问题或建议，请：
-- 📧 提交GitHub Issue
-- 📖 查阅项目文档
-- 💬 联系项目维护团队
-
-## ⭐ Star History
-
-如果这个项目对你有帮助，请给它一个⭐！
+本项目为内部使用系统。
 
