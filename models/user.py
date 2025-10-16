@@ -12,7 +12,12 @@ class User(UserMixin):
         self.province = province
         self.department = department
         self.created_at = created_at or datetime.now().isoformat()
-        self.is_active = is_active
+        self._is_active = is_active  # 使用内部属性
+    
+    @property
+    def is_active(self):
+        """重写UserMixin的is_active属性"""
+        return self._is_active
     
     def to_dict(self):
         return {
@@ -24,7 +29,7 @@ class User(UserMixin):
             'province': self.province,
             'department': self.department,
             'created_at': self.created_at,
-            'is_active': self.is_active
+            'is_active': self._is_active  # 使用内部属性
         }
     
     @staticmethod
