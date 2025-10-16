@@ -107,13 +107,26 @@ class DataManager:
     def get_all_users(self):
         """获取所有用户"""
         users_data = self._read_json(self.users_file)
-        return [User.from_dict(u) for u in users_data]
+        users = []
+        for u in users_data:
+            try:
+                # 确保必要字段存在
+                if 'is_active' not in u:
+                    u['is_active'] = True
+                users.append(User.from_dict(u))
+            except Exception as e:
+                print(f"Error loading user {u.get('username', 'unknown')}: {e}")
+                continue
+        return users
     
     def get_user_by_id(self, user_id):
         """根据ID获取用户"""
         users_data = self._read_json(self.users_file)
         for user in users_data:
             if user['id'] == user_id:
+                # 确保必要字段存在
+                if 'is_active' not in user:
+                    user['is_active'] = True
                 return User.from_dict(user)
         return None
     
@@ -122,6 +135,9 @@ class DataManager:
         users_data = self._read_json(self.users_file)
         for user in users_data:
             if user['username'] == username:
+                # 确保必要字段存在
+                if 'is_active' not in user:
+                    user['is_active'] = True
                 return User.from_dict(user)
         return None
     
@@ -148,9 +164,12 @@ class DataManager:
         users_data = self._read_json(self.users_file)
         for user in users_data:
             if user['id'] == user_id:
+                # 更新所有提供的字段（不再检查是否已存在）
                 for key, value in kwargs.items():
-                    if key in user:
-                        user[key] = value
+                    user[key] = value
+                # 确保关键字段存在
+                if 'is_active' not in user:
+                    user['is_active'] = True
                 self._write_json(self.users_file, users_data)
                 return True
         return False

@@ -37,7 +37,7 @@ register_routes(app, data_manager)
 @app.route('/')
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard.index'))
     return redirect(url_for('auth.login'))
 
 # 错误处理
